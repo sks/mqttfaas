@@ -1,0 +1,9 @@
+FROM mqttfaas:lite as lite
+
+FROM docker:dind
+
+COPY --from=lite /bin/mqttfaas  /bin/mqttfaas
+
+COPY scripts/entrypoint.sh /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]

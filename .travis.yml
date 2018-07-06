@@ -1,0 +1,14 @@
+sudo: required
+
+language: go
+
+go:
+  - master
+
+before_install:
+- docker pull golang:alpine
+
+script: make
+
+services:
+  - docker
