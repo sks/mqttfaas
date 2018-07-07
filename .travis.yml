@@ -1,5 +1,8 @@
 sudo: required
 
+services:
+  - docker
+
 language: go
 
 go:
@@ -10,5 +13,9 @@ before_install:
 
 script: make
 
-services:
-  - docker
+after_success:
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
+  - export REPO=$DOCKER_USER/mqttfaas
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker tag mqttfaas:lite $REPO
+  - docker push $REPO:$TAG
