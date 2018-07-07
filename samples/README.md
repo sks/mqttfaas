@@ -1,4 +1,16 @@
-# Sample functions
+# Functions
+
+- The function should expect the message payload in stdin
+- Function output to `stderr` will be piped to stderr
+- If the function wants to publish a message to MQTT. It has to print a JSON to `stdout`
+    ```json
+    {
+        "topic": "topic/to/publish/to",
+        "data": "any_data_that_you_want_to_publish"
+    }
+    ```
+
+## Sample functions
 
 This folder contains some sample functions that shows the usage
 

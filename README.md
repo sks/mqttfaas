@@ -2,9 +2,7 @@
 
 [![Build Status](https://travis-ci.org/sks/mqttfaas.svg?branch=master)](https://travis-ci.org/sks/mqttfaas) [![Go Report Card](https://goreportcard.com/badge/github.com/sks/mqttfaas)](https://goreportcard.com/report/github.com/sks/mqttfaas)
 
-Execute docker functions that are run based on mqtt messages.
-
-Couple of integration points are demoed in [integration](./integration) folder.
+Execute functions that are run based on mqtt messages.
 
 ## Quick Setup
 

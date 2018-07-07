@@ -8,6 +8,7 @@ import (
 )
 
 const topicToPostTo = "cat/output"
+const outputFormat = `{"topic":%q,"data": %q}`
 
 func main() {
 	data, err := ioutil.ReadAll(os.Stdin)
@@ -19,8 +20,9 @@ func main() {
 	if inputFromTopic == topicToPostTo {
 		return
 	}
+	// Any message to stderr is ignored
 	fmt.Fprintf(os.Stderr, "Topic = %q\n", inputFromTopic)
 	inputMessage := strings.TrimSpace(string(data))
 
-	fmt.Println(fmt.Sprintf(`{"topic":%q,"data": %q}`, topicToPostTo, inputMessage))
+	fmt.Printf(outputFormat, topicToPostTo, inputMessage)
 }

@@ -6,12 +6,18 @@ import (
 	"errors"
 	"io/ioutil"
 	"net/http/httputil"
-	"os"
 
 	dockertypes "github.com/docker/docker/api/types"
 	"github.com/sks/mqttfaas/pkg/config"
 	"github.com/sks/mqttfaas/pkg/types"
 )
+
+var attachOptions = dockertypes.ContainerAttachOptions{
+	Stream: true,
+	Stdin:  true,
+	Stdout: true,
+	Stderr: true,
+}
 
 //ContainerRunner ...
 type ContainerRunner struct {
@@ -41,12 +47,7 @@ func (c *ContainerRunner) Run(ctx context.Context, input *types.ImageRunnerInput
 		}
 	}()
 
-	hijackResponse, err := c.dockerCLI.ContainerAttach(ctx, containerID, dockertypes.ContainerAttachOptions{
-		Stream: true,
-		Stdin:  true,
-		Stdout: true,
-		Stderr: true,
-	})
+	hijackResponse, err := c.dockerCLI.ContainerAttach(ctx, containerID, attachOptions)
 	if err != nil && err != httputil.ErrPersistEOF {
 		return nil, err
 	}
@@ -65,7 +66,7 @@ func (c *ContainerRunner) Run(ctx context.Context, input *types.ImageRunnerInput
 			streamer := hijackedIOStreamer{
 				inputStream:  ioutil.NopCloser(bytes.NewReader(input.Message)),
 				outputStream: functionOutput,
-				errorStream:  os.Stderr,
+				errorStream:  newErrorStream(input.FunctionMetadata.Name),
 				resp:         hijackResponse,
 			}
 
