@@ -1,0 +1,14 @@
+services:
+  dind:
+    image: docker:dind
+    privileged: true
+    ports:
+      - "12375:2375"
+  faas:
+    image: sabithksme/mqttfaas:latest
+    environment:
+    - MQTT_CONNECTION_STRING=tcp://mqtt:1883
+    - DOCKER_HOST=tcp://dind:2375
+    depends_on:
+      - "dind"
+version: '3.2'

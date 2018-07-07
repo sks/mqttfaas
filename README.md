@@ -4,6 +4,8 @@
 
 Execute docker functions that are run based on mqtt messages.
 
+Couple of integration points are demoed in [integration](./integration) folder.
+
 ## Quick Setup
 
 ```sh
@@ -42,6 +44,8 @@ Samples can be found in [samples](./samples) folder
 
 ## Development environment
 
+Checkout [Makefile](./Makefile) for all available commands
+
 ```sh
 git clone github.com/sks/mqttfaas $GOPATH/src/github.com/sks/mqttfaas
 cd $_
@@ -49,6 +53,5 @@ cd $_
 # Install Dependency and build binaries
 make
 
-# Start the MQTT
-docker-compose up -d
+make help
 ```
