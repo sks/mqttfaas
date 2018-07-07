@@ -37,26 +37,7 @@ func (c *ContainerRunner) createContainer(ctx context.Context, input *types.Imag
 	if containerID != "" {
 		return containerID, nil
 	}
-
-	createResponse, err := c.dockerCLI.ContainerCreate(ctx, &container.Config{
-		AttachStdin:  true,
-		AttachStdout: true,
-		AttachStderr: true,
-		Image:        input.FunctionMetadata.Image,
-		OpenStdin:    true,
-		Tty:          false,
-		StdinOnce:    true,
-		Labels: map[string]string{
-			"mqttfaas_runtime": containerName,
-			"mqtt_topic":       input.Topic,
-		},
-		Volumes: map[string]struct{}{
-			"/data": *new(struct{}),
-		},
-		Env: []string{
-			fmt.Sprintf("FIRED_BY=%s", input.Topic),
-		},
-	}, &container.HostConfig{
+	createResponse, err := c.dockerCLI.ContainerCreate(ctx, input.ContainerConfig(c.defaultEnv), &container.HostConfig{
 		Binds: []string{
 			fmt.Sprintf("%s:%s", filepath.Join(c.configuration.DataDir, containerName), "/data"),
 		},

@@ -1,6 +1,8 @@
 # Temperature Converter
 
-## Usage 
+This function container listens to the topic `house/+/room/+/temperature` as dictated by [Dockerfile](./Dockerfile)
+
+## Usage
 
 ### Testing
 

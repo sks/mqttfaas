@@ -6,5 +6,6 @@ This folder contains some sample functions that shows the usage
 
     A simple [golang](golang.org) example that reads the mqtt payload and returns a JSON
 
-- [Temperate converter](./temp_coverter)
+- [Temperate converter](./temp_converter)
+
     A Utility function to convert degree celsius into farenheit.

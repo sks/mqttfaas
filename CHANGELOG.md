@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added [temperature convertor](./samples/temp_converter) example
 - Updated [README](./README.md) on usage with [mqttcli](https://github.com/shirou/mqttcli)
 - Functions can dictate if they should be single use only. (#2)
+- Proxy settings are copied over to the container.
+- Any environment with prefix `MQTT_FAAS` is available to the functions.
 
 ### Changed
 

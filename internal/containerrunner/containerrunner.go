@@ -17,6 +17,7 @@ import (
 type ContainerRunner struct {
 	dockerCLI     DockerCLI
 	configuration *config.Config
+	defaultEnv    []string
 }
 
 //New ...
@@ -24,6 +25,7 @@ func New(dockerCLI DockerCLI, configuration *config.Config) *ContainerRunner {
 	return &ContainerRunner{
 		dockerCLI,
 		configuration,
+		GetDefaultEnvs(),
 	}
 }
 

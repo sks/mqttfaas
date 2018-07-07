@@ -18,8 +18,8 @@ var _ = Describe("FunctionMetadata", func() {
 				"user/docker_image:latest",
 			},
 			Labels: map[string]string{
-				"mqtt_faas":                  "my_fancy_faas_name",
-				"mqtt_faas_delete_after_use": "some_key",
+				"mqtt_faas":                 "my_fancy_faas_name",
+				"mqtt_faas_single_use_only": "some_key",
 			},
 		}
 	})
@@ -33,7 +33,7 @@ var _ = Describe("FunctionMetadata", func() {
 			}))
 		})
 		It("marks the function to be deleted soon after use if the label is available", func() {
-			delete(img.Labels, "mqtt_faas_delete_after_use")
+			delete(img.Labels, "mqtt_faas_single_use_only")
 			metadata := types.NewMetadata(img)
 			Expect(metadata.DeleteAfterUse).To(BeFalse())
 		})
