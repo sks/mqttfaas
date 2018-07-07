@@ -45,7 +45,7 @@ func main() {
 	funtionsOutputChan := make(chan *faas.Output)
 	defer close(funtionsOutputChan)
 
-	containerRunner := containerrunner.New(dockerCLI, configuration.DataDir, configuration.DontUseHotContainers)
+	containerRunner := containerrunner.New(dockerCLI, configuration)
 	imageFinder := topicregistry.NewTopicImageMapper(dockerCLI)
 
 	processor := processor.New(imageFinder, containerRunner, funtionsOutputChan, configuration.FunctionTimeout)

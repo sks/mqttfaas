@@ -9,22 +9,21 @@ import (
 	"os"
 
 	dockertypes "github.com/docker/docker/api/types"
+	"github.com/sks/mqttfaas/pkg/config"
 	"github.com/sks/mqttfaas/pkg/types"
 )
 
 //ContainerRunner ...
 type ContainerRunner struct {
-	dockerCLI       DockerCLI
-	dataDir         string
-	removeContainer bool
+	dockerCLI     DockerCLI
+	configuration *config.Config
 }
 
 //New ...
-func New(dockerCLI DockerCLI, dataDir string, removeContainer bool) *ContainerRunner {
+func New(dockerCLI DockerCLI, configuration *config.Config) *ContainerRunner {
 	return &ContainerRunner{
 		dockerCLI,
-		dataDir,
-		removeContainer,
+		configuration,
 	}
 }
 
@@ -35,7 +34,7 @@ func (c *ContainerRunner) Run(ctx context.Context, input *types.ImageRunnerInput
 		return nil, err
 	}
 	defer func() {
-		if c.removeContainer {
+		if c.configuration.DontUseHotContainers || input.FunctionMetadata.DeleteAfterUse {
 			c.dockerCLI.ContainerRemove(ctx, containerID, dockertypes.ContainerRemoveOptions{})
 		}
 	}()

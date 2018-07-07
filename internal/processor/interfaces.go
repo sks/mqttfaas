@@ -9,7 +9,7 @@ import (
 //ImageFinder get the list of images to run based on topic
 //go:generate counterfeiter . ImageFinder
 type ImageFinder interface {
-	GetImages(context.Context, string) ([]string, error)
+	GetImages(context.Context, string) ([]types.FunctionMetadata, error)
 }
 
 //ContainerRunner ...

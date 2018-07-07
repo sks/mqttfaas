@@ -11,7 +11,8 @@ RUN CGO_ENABLED=0 \
 
 FROM scratch 
 
-LABEL mqtt_faas="go_catter" mqtt_faas_topic="cat/input/#|wildcat/input/#"
+LABEL mqtt_faas="go_catter" \
+    mqtt_faas_topic="cat/input/#|wildcat/input/#"
 
 COPY --from=builder /bin/gocatter /bin/gocatter
 

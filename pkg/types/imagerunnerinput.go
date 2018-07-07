@@ -24,16 +24,16 @@ func cleanText(input string) string {
 
 //ImageRunnerInput ...
 type ImageRunnerInput struct {
-	Topic     string
-	Message   []byte
-	ImageName string
-	name      string
+	Topic            string
+	Message          []byte
+	FunctionMetadata FunctionMetadata
+	name             string
 }
 
 //Name ...
 func (i *ImageRunnerInput) Name() string {
 	if i.name == "" {
-		i.name = fmt.Sprintf("%s-%s", cleanText(i.Topic), cleanText(i.ImageName))
+		i.name = fmt.Sprintf("%s-%s", cleanText(i.Topic), cleanText(i.FunctionMetadata.Image))
 	}
 	return i.name
 }

@@ -42,12 +42,13 @@ func (c *ContainerRunner) createContainer(ctx context.Context, input *types.Imag
 		AttachStdin:  true,
 		AttachStdout: true,
 		AttachStderr: true,
-		Image:        input.ImageName,
+		Image:        input.FunctionMetadata.Image,
 		OpenStdin:    true,
 		Tty:          false,
 		StdinOnce:    true,
 		Labels: map[string]string{
 			"mqttfaas_runtime": containerName,
+			"mqtt_topic":       input.Topic,
 		},
 		Volumes: map[string]struct{}{
 			"/data": *new(struct{}),
@@ -57,7 +58,7 @@ func (c *ContainerRunner) createContainer(ctx context.Context, input *types.Imag
 		},
 	}, &container.HostConfig{
 		Binds: []string{
-			fmt.Sprintf("%s:%s", filepath.Join(c.dataDir, containerName), "/data"),
+			fmt.Sprintf("%s:%s", filepath.Join(c.configuration.DataDir, containerName), "/data"),
 		},
 	}, &network.NetworkingConfig{}, containerName)
 	if err != nil {

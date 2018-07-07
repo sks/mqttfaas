@@ -28,4 +28,4 @@ after_success:
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
   - docker tag mqttfaas:lite $DOCKER_USERNAME/mqttfaas:$TAG
   - docker push $DOCKER_USERNAME/mqttfaas:$TAG
-  - docker push $(docker images -f "reference=sabithksme/mqttfaas_*" --format="{{.Repository}}")
+  - docker images -f "reference=sabithksme/mqttfaas_*:latest" --format="{{.Repository}}" | xargs -n 1 docker push

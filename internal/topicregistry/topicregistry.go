@@ -6,6 +6,7 @@ import (
 
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/filters"
+	faastype "github.com/sks/mqttfaas/pkg/types"
 )
 
 //TopicImageMapper ...
@@ -21,7 +22,7 @@ func NewTopicImageMapper(dockerCLI DockerCLI) *TopicImageMapper {
 }
 
 //GetImages for a given topic figure out the images to use
-func (t *TopicImageMapper) GetImages(ctx context.Context, topic string) ([]string, error) {
+func (t *TopicImageMapper) GetImages(ctx context.Context, topic string) ([]faastype.FunctionMetadata, error) {
 	filters := filters.NewArgs()
 	filters.Add("label", "mqtt_faas")
 	images, err := t.dockerCLI.ImageList(ctx, types.ImageListOptions{
@@ -30,10 +31,10 @@ func (t *TopicImageMapper) GetImages(ctx context.Context, topic string) ([]strin
 	if err != nil {
 		return nil, err
 	}
-	output := []string{}
+	output := []faastype.FunctionMetadata{}
 	for _, img := range images {
 		if len(img.RepoTags) != 0 && t.imageShouldBeRun(img, topic) {
-			output = append(output, img.RepoTags[0])
+			output = append(output, faastype.NewMetadata(img))
 		}
 	}
 	return output, nil
