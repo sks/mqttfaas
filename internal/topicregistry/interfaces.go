@@ -7,6 +7,7 @@ import (
 )
 
 //DockerCLI ...
+//go:generate counterfeiter . DockerCLI
 type DockerCLI interface {
 	ImageList(ctx context.Context, options types.ImageListOptions) ([]types.ImageSummary, error)
 }

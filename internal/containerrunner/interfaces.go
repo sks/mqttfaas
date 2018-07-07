@@ -9,6 +9,7 @@ import (
 )
 
 //DockerCLI ...
+//go:generate counterfeiter . DockerCLI
 type DockerCLI interface {
 	ContainerCreate(ctx context.Context, config *container.Config, hostConfig *container.HostConfig, networkingConfig *network.NetworkingConfig, containerName string) (container.ContainerCreateCreatedBody, error)
 	ContainerStart(ctx context.Context, containerID string, options types.ContainerStartOptions) error

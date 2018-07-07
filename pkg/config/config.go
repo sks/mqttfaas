@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+	"path/filepath"
 	"time"
 )
 
@@ -11,6 +12,7 @@ type Config struct {
 	TopicsToListenTo     string
 	DontUseHotContainers bool
 	FunctionTimeout      time.Duration
+	DataDir              string
 }
 
 func getEnvOrDefault(env, defaultValue string) string {
@@ -30,5 +32,6 @@ func New() *Config {
 		TopicsToListenTo:     getEnvOrDefault("TOPICS_OF_INTEREST", "#"),
 		DontUseHotContainers: deleteContainerOnceDone != "",
 		FunctionTimeout:      time.Duration(5 * time.Second),
+		DataDir:              getEnvOrDefault("DATA_DIRECTORY", filepath.Join("/", "data")),
 	}
 }

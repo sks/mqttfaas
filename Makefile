@@ -72,7 +72,8 @@ dockerize/lite:
 
 ## Generate runs go:generate
 generate:
-	git clean -xffd **/*fakes*
+	@git clean -xffd **/*fakes*
+	@find . -iname interfaces.go | xargs -n 1 go generate
 
 ## Package Sample functions
 package:
