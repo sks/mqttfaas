@@ -4,8 +4,10 @@ services:
     ports:
     - "1883:1883"
     - "9001:9001"
-  # faas:
-  #   image: mqttfaas:lite
-  #   volumes:
-  #     - "/var/run/docker.sock:/var/run/docker.sock:ro"
-version: '3.1'
+  faas:
+    image: sabithksme/mqttfaas:latest
+    environment:
+    - MQTT_CONNECTION_STRING=tcp://mqtt:1883
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+version: '3.2'

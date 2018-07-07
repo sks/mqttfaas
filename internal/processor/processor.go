@@ -50,9 +50,9 @@ func (p *Processor) execute(topic string, message []byte, image string) {
 	defer cancel()
 
 	output, err := p.containerCLI.Run(ctx, &types.ImageRunnerInput{
-		ImageID: image,
-		Message: message,
-		Topic:   topic,
+		ImageName: image,
+		Message:   message,
+		Topic:     topic,
 	})
 	p.outputChan <- faas.NewOutput(output, err)
 }

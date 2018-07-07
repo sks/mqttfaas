@@ -41,7 +41,7 @@ func (c *ContainerRunner) createContainer(ctx context.Context, input *types.Imag
 		AttachStdin:  true,
 		AttachStdout: true,
 		AttachStderr: true,
-		Image:        input.ImageID,
+		Image:        input.ImageName,
 		OpenStdin:    true,
 		Tty:          false,
 		StdinOnce:    true,

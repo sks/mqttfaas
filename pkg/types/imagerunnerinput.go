@@ -3,7 +3,6 @@ package types
 import (
 	"fmt"
 	"regexp"
-	"strings"
 )
 
 var cleaningRegex *regexp.Regexp
@@ -25,17 +24,16 @@ func cleanText(input string) string {
 
 //ImageRunnerInput ...
 type ImageRunnerInput struct {
-	Topic   string
-	Message []byte
-	ImageID string
-	name    string
+	Topic     string
+	Message   []byte
+	ImageName string
+	name      string
 }
 
 //Name ...
 func (i *ImageRunnerInput) Name() string {
 	if i.name == "" {
-		imageIDTruc := []rune(strings.Split(i.ImageID, ":")[1])
-		i.name = fmt.Sprintf("%s-%s", cleanText(i.Topic), cleanText(string(imageIDTruc)[0:7]))
+		i.name = fmt.Sprintf("%s-%s", cleanText(i.Topic), cleanText(i.ImageName))
 	}
 	return i.name
 }

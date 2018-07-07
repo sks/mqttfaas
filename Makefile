@@ -26,7 +26,7 @@ endif
 GOFLAGS := -v -o $(BUILD_DEST) -ldflags "$(LDFLAGS)"
 
 ## Download dependencies and the run unit test and build the binary
-all: install test clean build dockerize
+all: install test clean build dockerize package
 
 ## Clean the dist directory
 clean:
@@ -46,6 +46,10 @@ install:
 	@which gocover-cobertura > /dev/null || go get github.com/t-yuki/gocover-cobertura
 	dep ensure -vendor-only
 
+## Run for local development
+start:
+	go run cmd/mqttfaas/main.go
+
 ## Build the linux binary
 build:
 	@mkdir -p $(BUILD_DEST) > /dev/null
@@ -54,11 +58,13 @@ build:
 ## Build the docker image
 dockerize: dockerize/lite
 
+## Create DIND based image
 dockerize/dind: #dockerize/lite
 	docker build $(DOCKER_BUILD_ARGS) \
 		--build-arg VERSION=${VERSION}-${GIT_COMMIT}-${GIT_DIRTY} \
 		-t mqttfaas:dind -f Dockerfile.dind .
 
+## Create lite image (Bring your docker runtime)
 dockerize/lite:
 	docker build $(DOCKER_BUILD_ARGS) \
 		--build-arg VERSION=${VERSION}-${GIT_COMMIT}-${GIT_DIRTY} \
@@ -68,6 +74,9 @@ dockerize/lite:
 generate:
 	git clean -xffd **/*fakes*
 
+## Package Sample functions
+package:
+	./scripts/packagesamples.sh
 
 ## Prints the version info about the project
 info:

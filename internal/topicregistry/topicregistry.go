@@ -32,8 +32,8 @@ func (t *TopicImageMapper) GetImages(ctx context.Context, topic string) ([]strin
 	}
 	output := []string{}
 	for _, img := range images {
-		if t.imageShouldBeRun(img, topic) {
-			output = append(output, img.ID)
+		if len(img.RepoTags) != 0 && t.imageShouldBeRun(img, topic) {
+			output = append(output, img.RepoTags[0])
 		}
 	}
 	return output, nil
