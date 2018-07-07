@@ -15,13 +15,15 @@ import (
 //ContainerRunner ...
 type ContainerRunner struct {
 	dockerCLI       DockerCLI
+	dataDir         string
 	removeContainer bool
 }
 
 //New ...
-func New(dockerCLI DockerCLI, removeContainer bool) *ContainerRunner {
+func New(dockerCLI DockerCLI, dataDir string, removeContainer bool) *ContainerRunner {
 	return &ContainerRunner{
 		dockerCLI,
+		dataDir,
 		removeContainer,
 	}
 }

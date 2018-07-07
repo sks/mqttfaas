@@ -3,6 +3,7 @@ package containerrunner
 import (
 	"context"
 	"fmt"
+	"path/filepath"
 
 	dockertypes "github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/container"
@@ -45,10 +46,20 @@ func (c *ContainerRunner) createContainer(ctx context.Context, input *types.Imag
 		OpenStdin:    true,
 		Tty:          false,
 		StdinOnce:    true,
+		Labels: map[string]string{
+			"mqttfaas_runtime": containerName,
+		},
+		Volumes: map[string]struct{}{
+			"/data": *new(struct{}),
+		},
 		Env: []string{
 			fmt.Sprintf("FIRED_BY=%s", input.Topic),
 		},
-	}, &container.HostConfig{}, &network.NetworkingConfig{}, containerName)
+	}, &container.HostConfig{
+		Binds: []string{
+			fmt.Sprintf("%s:%s", filepath.Join(c.dataDir, containerName), "/data"),
+		},
+	}, &network.NetworkingConfig{}, containerName)
 	if err != nil {
 		return "", err
 	}

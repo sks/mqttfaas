@@ -24,6 +24,7 @@ Samples can be found in [samples](./samples) folder
 - If the `mqtt_faas_topic` is empty. the function gets all the messages from all topics
 - Topic messages are available to the functions on stdin
 - Topic name is available as environment variable `FIRED_BY`
+- A Persistant `/data` directory is available to each function
 
 ## Development environment
 

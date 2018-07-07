@@ -15,7 +15,7 @@ GIT_COMMIT = $(shell git rev-parse HEAD)
 GIT_SHA    = $(shell git rev-parse --short HEAD)
 GIT_DIRTY  = $(shell test -n "`git status --porcelain`" && echo "dirty" || echo "clean")
 
-# LDFLAGS += -w -s -linkmode external -extldflags -static
+LDFLAGS += -w -s -extldflags -static
 
 DOCKER_BUILD_ARGS=--build-arg http_proxy=${HTTP_PROXY} --build-arg https_proxy=${HTTPS_PROXY} --build-arg no_proxy=${no_proxy}
 
@@ -23,7 +23,7 @@ ifndef VERSION
 	VERSION = DEV
 endif
 
-GOFLAGS := -v -o $(BUILD_DEST) -ldflags "$(LDFLAGS)"
+GOFLAGS := -ldflags "$(LDFLAGS)"
 
 ## Download dependencies and the run unit test and build the binary
 all: install test clean build dockerize package
@@ -41,6 +41,7 @@ test: ginkgo
 ## download dependencies to run this project
 install:
 	@which ginkgo > /dev/null || go get github.com/onsi/ginkgo/ginkgo
+	@which gox > /dev/null || go get github.com/mitchellh/gox
 	@which counterfeiter > /dev/null || go get github.com/maxbrunsfeld/counterfeiter
 	@which dep > /dev/null || go get github.com/golang/dep/cmd/dep
 	@which gocover-cobertura > /dev/null || go get github.com/t-yuki/gocover-cobertura
@@ -48,12 +49,20 @@ install:
 
 ## Run for local development
 start:
+	DATA_DIRECTORY="$$PWD/data" \
 	go run cmd/mqttfaas/main.go
 
 ## Build the linux binary
 build:
+	@rm -rf $(BUILD_DEST)
 	@mkdir -p $(BUILD_DEST) > /dev/null
-	go build $(GOFLAGS) -o $(BUILD_DEST)/mqttfaas ./cmd/mqttfaas/
+	@CGO_ENABLED=false \
+	gox \
+	-arch="386" -arch="amd64" \
+	-output "$(BUILD_DEST)/{{.Dir}}_{{.OS}}_{{.Arch}}" \
+	-os="darwin linux windows" \
+	$(GOFLAGS) \
+	./cmd/mqttfaas/
 
 ## Build the docker image
 dockerize: dockerize/lite

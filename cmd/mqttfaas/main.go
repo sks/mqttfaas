@@ -22,17 +22,14 @@ import (
 func main() {
 	log.Printf("Starting MQTT FAAS: %s\n", version.Version())
 	errChan := make(chan error)
-	wg := &sync.WaitGroup{}
-	wg.Add(1)
 	go func() {
 		var err error
 		for {
 			err = <-errChan
 			if err != nil {
-				panic(err)
+				log.Panic(err)
 			}
 		}
-
 	}()
 	c := make(chan os.Signal, 2)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
@@ -44,13 +41,11 @@ func main() {
 	configuration := config.New()
 
 	dockerCLI, err := client.NewEnvClient()
-	if err != nil {
-		panic(err)
-	}
+	errChan <- err
 	funtionsOutputChan := make(chan *faas.Output)
 	defer close(funtionsOutputChan)
 
-	containerRunner := containerrunner.New(dockerCLI, configuration.DontUseHotContainers)
+	containerRunner := containerrunner.New(dockerCLI, configuration.DataDir, configuration.DontUseHotContainers)
 	imageFinder := topicregistry.NewTopicImageMapper(dockerCLI)
 
 	processor := processor.New(imageFinder, containerRunner, funtionsOutputChan, configuration.FunctionTimeout)
@@ -61,7 +56,7 @@ func main() {
 	log.Printf("Connecting to MQTT server %s\n", configuration.MQTTConnectionString)
 
 	errChan <- dataBus.Connect()
+	wg := &sync.WaitGroup{}
+	wg.Add(1)
 	wg.Wait()
-
-	os.Exit(0)
 }
