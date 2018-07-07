@@ -23,7 +23,6 @@ deploy:
     tags: true
 
 after_success:
-  - make build
   - docker login -u $DOCKER_USERNAME -p $DOCKER_PASS
   - export REPO=$DOCKER_USERNAME/mqttfaas:latest
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`

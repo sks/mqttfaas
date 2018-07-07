@@ -26,5 +26,6 @@ var _ = Describe("IsSubTopic", func() {
 		Entry("+ sign only at one level", "a/b/c", "a/+", false),
 		Entry("different topics", "a/b", "12/b", false),
 		Entry("different topics", "a/1/b", "a/2/b", false),
+		Entry("substring but different", "house/388/room/living/temperature", "output/house/388/room/living/temperature", false),
 	)
 })

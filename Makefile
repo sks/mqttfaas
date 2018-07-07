@@ -56,7 +56,7 @@ start:
 build:
 	@rm -rf $(BUILD_DEST)
 	@mkdir -p $(BUILD_DEST) > /dev/null
-	@CGO_ENABLED=false \
+	@CGO_ENABLED=0 \
 	gox \
 	-arch="386" -arch="amd64" \
 	-output "$(BUILD_DEST)/{{.Dir}}_{{.OS}}_{{.Arch}}" \

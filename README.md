@@ -11,8 +11,22 @@ Execute docker functions that are run based on mqtt messages.
 # Download latest docker-compose.yml
 wget https://raw.githubusercontent.com/sks/mqttfaas/master/docker-compose.yml
 
+# Download a sample Function.
+# Samples can be found in samples directory
+docker pull sabithksme/mqttfaas_gocat
+
 # Start docker container
-docker-compose up
+docker-compose up -d
+
+# Grab a mqtt cli for testing purpose.
+# I am using https://github.com/shirou/mqttcli
+# go get github.com/shirou/mqttcli
+
+export MQTT_HOST="localhost"
+
+mqttcli sub -t "cat/#"
+
+mqttcli pub -t "cat/input/message" -m "this message should be echoed back to /cat/output"
 ```
 
 ## Definition of functions

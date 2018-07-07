@@ -12,7 +12,7 @@ RUN dep ensure -vendor-only
 
 COPY . .
 
-RUN CGO_ENABLED=false go build \
+RUN CGO_ENABLED=0 go build \
     -ldflags "-w -s -linkmode external -extldflags -static" \
     -o /tmp/mqttfaas ./cmd/mqttfaas
 

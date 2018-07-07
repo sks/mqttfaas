@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Added [temperature convertor](./samples/temp_converter) example
+- Updated README on usage with [mqttcli](https://github.com/shirou/mqttcli)
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
 ## [0.0.1] - 2018-07-07
 
 - Initial Draft version
