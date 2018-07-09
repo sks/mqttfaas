@@ -7,6 +7,9 @@ import (
 	"github.com/docker/docker/api/types/container"
 )
 
+//ContainerPrefix ...
+const ContainerPrefix = "mqttfaas"
+
 var cleaningRegex *regexp.Regexp
 
 func init() {
@@ -42,7 +45,7 @@ func (i *ImageRunnerInput) Name() string {
 		if !i.FunctionMetadata.NotInterestedInFiredBy {
 			topic = cleanText(i.Topic)
 		}
-		i.name = fmt.Sprintf("mqttfaas_%s-%s", topic, cleanText(i.FunctionMetadata.Image))
+		i.name = fmt.Sprintf("%s_%s-%s", ContainerPrefix, topic, cleanText(i.FunctionMetadata.Image))
 		if len(i.name) > 30 {
 			i.name = i.name[0:29]
 		}

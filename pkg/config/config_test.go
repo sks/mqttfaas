@@ -19,6 +19,7 @@ var _ = Describe("Config", func() {
 				MQTTConnectionString: "tcp://localhost:1883",
 				TopicsToListenTo:     "#",
 				DontUseHotContainers: false,
+				CleanupTime:          300000000000,
 				FunctionTimeout:      5000000000,
 				DataDir:              "/data",
 			}))
@@ -41,6 +42,7 @@ var _ = Describe("Config", func() {
 					MQTTConnectionString: "tcp://mqtt:1883",
 					TopicsToListenTo:     "my_fancy_topic",
 					DontUseHotContainers: true,
+					CleanupTime:          300000000000,
 					FunctionTimeout:      5000000000,
 					DataDir:              "/my-data",
 				}))

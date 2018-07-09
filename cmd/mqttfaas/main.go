@@ -9,6 +9,7 @@ import (
 	"syscall"
 
 	"github.com/docker/docker/client"
+	"github.com/sks/mqttfaas/internal/cleanup"
 	"github.com/sks/mqttfaas/internal/containerrunner"
 	"github.com/sks/mqttfaas/internal/databus"
 	"github.com/sks/mqttfaas/internal/outputprocessor"
@@ -42,8 +43,11 @@ func main() {
 
 	dockerCLI, err := client.NewEnvClient()
 	errChan <- err
+
 	funtionsOutputChan := make(chan *faas.Output)
 	defer close(funtionsOutputChan)
+
+	cleanup.New(configuration.CleanupTime, dockerCLI, errChan)
 
 	containerRunner := containerrunner.New(dockerCLI, configuration)
 	imageFinder := topicregistry.NewTopicImageMapper(dockerCLI)

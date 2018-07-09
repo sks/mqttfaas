@@ -32,7 +32,7 @@ docker-compose up -d
 
 export MQTT_HOST="localhost"
 
-mqttcli sub -t "cat/#"
+mqttcli sub -dd -t "cat/#"
 
 mqttcli pub -t "cat/input/message" -m "this message should be echoed back to /cat/output"
 ```

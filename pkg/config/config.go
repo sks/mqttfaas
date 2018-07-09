@@ -11,6 +11,7 @@ type Config struct {
 	MQTTConnectionString string
 	TopicsToListenTo     string
 	DontUseHotContainers bool
+	CleanupTime          time.Duration
 	FunctionTimeout      time.Duration
 	DataDir              string
 }
@@ -32,6 +33,7 @@ func New() *Config {
 		TopicsToListenTo:     getEnvOrDefault("TOPICS_OF_INTEREST", "#"),
 		DontUseHotContainers: deleteContainerOnceDone != "",
 		FunctionTimeout:      time.Duration(5 * time.Second),
+		CleanupTime:          time.Duration(5 * time.Minute),
 		DataDir:              getEnvOrDefault("DATA_DIRECTORY", filepath.Join("/", "data")),
 	}
 }
