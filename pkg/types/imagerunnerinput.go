@@ -34,15 +34,29 @@ type ImageRunnerInput struct {
 
 //Name ...
 func (i *ImageRunnerInput) Name() string {
+	if i.FunctionMetadata.DeleteAfterUse {
+		return ""
+	}
 	if i.name == "" {
-		i.name = fmt.Sprintf("%s-%s", cleanText(i.Topic), cleanText(i.FunctionMetadata.Image))
+		topic := ""
+		if !i.FunctionMetadata.NotInterestedInFiredBy {
+			topic = cleanText(i.Topic)
+		}
+		i.name = fmt.Sprintf("mqttfaas_%s-%s", topic, cleanText(i.FunctionMetadata.Image))
+		if len(i.name) > 30 {
+			i.name = i.name[0:29]
+		}
 	}
 	return i.name
 }
 
 //ContainerConfig ...
 func (i *ImageRunnerInput) ContainerConfig(defaultEnv []string) *container.Config {
-	env := append(defaultEnv, fmt.Sprintf("FIRED_BY=%s", i.Topic))
+	var env = defaultEnv
+	if !i.FunctionMetadata.NotInterestedInFiredBy {
+		env = append(env, fmt.Sprintf("FIRED_BY=%s", i.Topic))
+	}
+
 	return &container.Config{
 		AttachStdin:  true,
 		AttachStdout: true,

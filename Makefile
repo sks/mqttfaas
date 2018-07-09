@@ -6,7 +6,6 @@ RESET  := $(shell tput -Txterm sgr0)
 
 .PHONY: all build ci clean dep ginkgo test install
 
-CERT_FOLDER = data/certs
 GO_PROJECT = github.com/sks/mqttfaas
 BUILD_DEST = build
 COMMIT_HASH=`git rev-parse --short HEAD`
@@ -65,16 +64,7 @@ build:
 	./cmd/mqttfaas/
 
 ## Build the docker image
-dockerize: dockerize/lite
-
-## Create DIND based image
-dockerize/dind: #dockerize/lite
-	docker build $(DOCKER_BUILD_ARGS) \
-		--build-arg VERSION=${VERSION}-${GIT_COMMIT}-${GIT_DIRTY} \
-		-t mqttfaas:dind -f Dockerfile.dind .
-
-## Create lite image (Bring your docker runtime)
-dockerize/lite:
+dockerize:
 	docker build $(DOCKER_BUILD_ARGS) \
 		--build-arg VERSION=${VERSION}-${GIT_COMMIT}-${GIT_DIRTY} \
 		-t mqttfaas:lite .

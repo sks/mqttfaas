@@ -6,6 +6,14 @@ Execute functions that are run based on mqtt messages.
 
 ## Quick Setup
 
+### Install the binary
+
+```sh
+curl https://raw.githubusercontent.com/sks/mqttfaas/master/install.sh | sh
+```
+
+### On Docker
+
 ```sh
 
 # Download latest docker-compose.yml
@@ -33,12 +41,7 @@ mqttcli pub -t "cat/input/message" -m "this message should be echoed back to /ca
 
 Samples can be found in [samples](./samples) folder
 
-- Must have a [label](https://docs.docker.com/config/labels-custom-metadata/) `mqtt_faas`
-- Topics of interest for each function should be marked using LABEL `mqtt_faas_topic`
-- If the `mqtt_faas_topic` is empty. Function gets all the messages from all topics
-- Topic messages are available to the functions on stdin
-- Topic name is available as environment variable `FIRED_BY`
-- A Persistant `/data` directory is available to each function
+Guideline on [labels](https://docs.docker.com/config/labels-custom-metadata/) can be found in [here](./pkg/types/README.md)
 
 ## Development environment
 
