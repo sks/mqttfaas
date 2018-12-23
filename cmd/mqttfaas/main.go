@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"sync"
 	"syscall"
 
 	"github.com/docker/docker/client"
@@ -60,7 +59,5 @@ func main() {
 	log.Printf("Connecting to MQTT server %s\n", configuration.MQTTConnectionString)
 
 	errChan <- dataBus.Connect()
-	wg := &sync.WaitGroup{}
-	wg.Add(1)
-	wg.Wait()
+	select {}
 }
