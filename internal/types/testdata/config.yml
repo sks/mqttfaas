@@ -1,0 +1,15 @@
+databus:
+  type: "mqtt"
+  config: 
+    "key1": "value1"
+httprequests:
+  - topic:
+    - /wordcount/input
+    path: wc
+    output_topic: /dev/stdout
+    error_topic: /dev/stderr
+    headers:
+      x_custom_header_1: x_custom_header_1_value
+    query:
+      x_custom_query_1: x_custom_query_1_value
+    content_type: application/octet-stream

@@ -1,0 +1,16 @@
+version: "3.3"
+services:
+  httpinvoker:
+    image: mqttfaas/httpinvoker:amd64-latest
+    networks:
+      - faas
+      - mqtt
+    links:
+      - mqtt
+    environment:
+      HTTP_PREFIX: http://gateway:8080/function
+    volumes:
+      - "./mounts/httpinvoker/data:/data"
+networks:
+  faas:
+    driver: bridge

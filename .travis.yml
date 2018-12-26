@@ -1,0 +1,21 @@
+sudo: required
+
+services:
+  - docker
+
+language: go
+
+go:
+  - master
+
+script: make
+
+deploy:
+  - provider: script
+    script: docker login -u $DOCKER_USERNAME -p $DOCKER_PASS && make docker/publish
+    on:
+      tags: true
+  - provider: script
+    script: docker login -u $DOCKER_USERNAME -p $DOCKER_PASS && make docker/publish
+    on:
+      branch: develop

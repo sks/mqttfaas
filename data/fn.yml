@@ -1,0 +1,20 @@
+version: "3.3"
+services:
+  runtime:
+    image: fnproject/fnserver
+    privileged: true
+    ports:
+    - "8080:8080"
+    networks:
+      - faas
+  imageloader:
+    image: mqttfaas/imageloader
+    ports:
+    - "8000:8000"
+    networks:
+      - faas
+    environment:
+      DOCKER_HOST: 'tcp://runtime:2375'
+networks:
+  faas:
+    driver: bridge

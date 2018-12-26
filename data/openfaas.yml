@@ -1,0 +1,70 @@
+version: "3.3"
+services:
+  runtime:
+    image: openfaas-runtime:amd64-latest
+    privileged: true
+    networks:
+      - faas
+  imageloader:
+    image: mqttfaas/imageloader:amd64-latest
+    ports:
+    - "8000:8000"
+    networks:
+      - faas
+    environment:
+      DOCKER_HOST: 'tcp://runtime:2375'
+  alertmanager:
+    image: prom/alertmanager:v0.15.3
+    volumes:
+      - "./mounts/alertmanager/config:/config"
+    links:
+      - prometheus
+    environment:
+        no_proxy: "gateway"
+    command:
+        - '--config.file=/config/alertmanager.yml'
+        - '--storage.path=/data/storage'
+    networks:
+        - faas
+    # Uncomment the following port mapping if you wish to expose the Prometheus
+    # Alertmanager UI.
+    # ports:
+    #     - 9093:9093
+  prometheus:
+    image: prom/prometheus:v2.6.0
+    links:
+      - gateway
+    volumes:
+      - "./mounts/prometheus/config:/config"
+    command:
+      - '--config.file=/config/prometheus.yml'
+    networks:
+      - faas
+    environment:
+      no_proxy: "gateway"
+    # ports:
+    #     - "9090:9090"
+  gateway:
+    image: openfaas/gateway:0.9.11
+    networks:
+      - faas
+      - gateway
+    links:
+      - runtime
+    ports:
+        - "8080:8080"
+    environment:
+      DOCKER_HOST: 'tcp://runtime:2375'
+      functions_provider_url: "http://runtime:8080/"
+      read_timeout:  "300s"
+      write_timeout: "300s"
+      upstream_timeout: "300s"
+      no_proxy: "prometheus,runtime"
+      dnsrr: "true"
+      scale_from_zero: "true"
+
+networks:
+  gateway:
+    driver: bridge
+  faas:
+    driver: bridge

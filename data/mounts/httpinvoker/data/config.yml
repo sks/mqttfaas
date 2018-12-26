@@ -1,0 +1,16 @@
+databus:
+  type: "mqtt"
+  config:
+    "connection_string": "tcp://mqtt:1883"
+    "topic": "#"
+httprequests:
+  - output_topic: /dev/stdout
+    error_topic: /dev/stderr
+    topic:
+    - /wordcount/input
+    path: wc
+    headers:
+      x_custom_header_1: x_custom_header_1_value
+    query:
+      x_custom_query_1: x_custom_query_1_value
+    content_type: application/octet-stream

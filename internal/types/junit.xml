@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <testsuite name="types" tests="1" failures="0" time="0.000767983">
+      <testcase name="Parse Config file ParseConfigFile Returns the config file content in a struct" classname="types" time="0.000688118"></testcase>
+  </testsuite>

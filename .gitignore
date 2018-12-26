@@ -1,0 +1,5 @@
+vendor/
+build/
+coverage.xml
+*fakes*
+*.tar.gz

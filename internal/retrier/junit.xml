@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <testsuite name="retry logic" tests="3" failures="0" time="0.000385953">
+      <testcase name="Retry calls the given function for the given attempts" classname="retry logic" time="8.0514e-05"></testcase>
+      <testcase name="Retry Calls the function multiple times if it errored out before" classname="retry logic" time="9.2954e-05"></testcase>
+      <testcase name="Retry returns the error if there are too many errors" classname="retry logic" time="2.595e-05"></testcase>
+  </testsuite>
